@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			li{
+				list-style: none;
+			}
+			#wrap{
+				margin-left: 100px;
+			}
+			input{
+				width: 150px;
+				height: 30px;
+				color: deeppink;
+				font: bold 18px/30px "微软雅黑";
+			}
+			#list{
+				width: 1050px;
+				height: 1000px;
+				margin-top: 10px;
+				border: 5px dashed #7CFC00;
+				overflow: hidden;
+			}
+			#list>li{
+				width: 130px;
+				height: 130px;
+				border: 2px solid palegreen;
+				margin-right: 40px;
+				margin-top: 20px;
+				text-align: center;
+				position: relative;
+				float: left;
+			}
+			#list .images{
+				width: 100px;
+				height: 120px;
+				background: url(img1/doc.png) no-repeat ;
+				background-size: 120px 100px;
+				margin-left: 15px;
+			}
+			#list .itext{
+				width: 115px;
+				height: 20px;
+				position: absolute;
+				left: 5px;
+				bottom: 5px;
+				background: palegoldenrod;
+				display: none;
+			}
+			#list .cbox{
+				width: 25px;
+				height: 25px;
+				border: 3px solid #002952;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			#list span{
+				width: 115px;
+				height: 20px;
+				position: absolute;
+				left: 5px;
+				bottom: 5px;
+				color: palevioletred;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<input type="button" value="新建文件夹"/>
+			<input type="button" value="删除选中文件夹"/>
+			<!--<input type="button" value="sure"/>-->
+			<ul id="list">
+				<!--<li>
+					<input type="checkbox" class="cbox"/>
+					<div class="images"></div>
+					<input type="text" value="新建文件夹" class="itext"/>
+					<span>新建文件夹</span>
+				</li>-->
+			</ul>
+		</div>
+		<script>
+			var oWrap = document.getElementById('wrap');
+			var aInp = oWrap.getElementsByTagName('input');//获取按钮
+			var oList = document.getElementById('list');
+			var num = 1;
+			function addThings(){
+				var newLi = document.createElement("li");
+				oList.appendChild(newLi);
+				
+				var newInp2 = document.createElement("input");
+				newInp2.className = "cbox";
+				newInp2.type = "checkbox";
+				newLi.appendChild(newInp2);
+				
+				var newDiv = document.createElement("div");
+				newDiv.className = "images";
+				newLi.appendChild(newDiv);
+				
+				var newInp1 = document.createElement("input");
+				newInp1.className = "itext";
+				newInp1.value = "菜菜de文件夹";
+				newInp1.type= "text";
+				newLi.appendChild(newInp1);
+				
+				var newSpan = document.createElement("span");
+				newSpan.innerHTML = "新建文件夹" + num;
+				newSpan.onclick = function(){
+					this.style.display = "none";
+					this.previousElementSibling.style.display = "block";
+					myName = this.previousElementSibling;
+					mySpan = this;
+				}
+				newInp1.onmouseout = function(){
+					var name = myName.value;
+					mySpan.innerHTML = name;
+					myName.style.display = "none";
+					mySpan.style.display = "block";
+				}
+				newLi.appendChild(newSpan);
+			}
+			function CheDel(){
+				var arrLi = oList.children;
+				for(var i=0; i<arrLi.length; i++){
+					var Checkbox = arrLi[i].firstChild; 
+					if(Checkbox.checked){
+						oList.removeChild(arrLi[i]);
+						i--;
+					}
+				}
+			}
+			aInp[0].onclick = function(){
+				addThings();
+				num++;
+			}
+			aInp[1].onclick = function(){
+				CheDel();
+			}
+//			aInp[2].onclick = function(){
+//				var name = myName.value;
+//				mySpan.innerHTML = name;
+//				myName.style.display = "none";
+//				mySpan.style.display = "block";
+//			}
+		</script>
+	</body>
+</html>

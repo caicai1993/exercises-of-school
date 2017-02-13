@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			<!--
+				1、在做查找的时候，先检查输入的内容：
+					（1）若为空，则弹出提示信息；
+					（2）若没找到，则弹出相应的提示信息； 
+					（3）若找到，则添加span。
+					（4）要清空输入框里面的内容。
+					（5）下一次查找前，将盒子里的内容还原。
+				2、在做替换的时候：要先将上次替换的内容保存，再进行查找替换。
+			-->
+		</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			li{
+				list-style: none;
+			}
+			#box{
+				width: 550px;
+				height: 450px;
+				padding: 40px 35px 10px;
+				margin: 50px auto;
+				background: lightgray;
+			}
+			#box .cleft{
+				width: 430px;
+				height: 450px;
+				float: left;
+			}
+			#box .content{
+				width: 430px;
+				height: 300px;
+				background: #fff;
+				font: 16px/20px "宋体";
+			}
+			#box .box{
+				width: 390px;
+				height: 80px;
+				border: 10px solid #7CFC00;
+				padding: 10px;
+				margin-top: 12px;
+				background: lavender;
+				display: none;
+			}
+			.box .tit{
+				width: 100%;
+				height: 30px;
+				border-bottom: 2px solid red;
+				position: relative;
+			}
+			.tit span{
+				float: left;
+				padding: 0 10px;
+				font: bold 16px/30px "微软";
+				color: #000;
+			}
+			.tit .close{
+				position: absolute;
+				top: -10px;
+				right: -10px;
+				width: 20px;
+				height: 20px;
+			}
+			.itext{
+				width: 160px;
+				height: 20px;
+				margin-top: 20px;
+			}
+			#boxlist li{
+				display: none;
+			}
+			#box .cright{
+				width: 90px;
+				height: 120px;
+				float: right;
+			}
+			.cright li{
+				width: 100%;
+				height: 40px;
+				background: mistyrose;
+				font: 16px/40px "微软雅黑";
+				text-align: center;
+				color: #000;
+			}
+			#show{
+				width: 100%;
+				height: 40px;
+				font: 16px/40px "微软雅黑";
+				text-align: center;
+				background: mistyrose;
+				display: block;
+				color: #FFF;
+			}
+			#list{
+				display: none;
+			}
+			.active{
+				background: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div class="cleft">
+				<div class="content">
+				这是一部香港电影，讲述的是警匪的斗智斗勇，场面震撼，效果特牛逼，由香港著名巨星刘德华，周星驰联袂巨献。 
+				这是一部动作喜剧片，里面的主人公是一位来自香港警世世家的香港督察。
+				如果你看到这里还想不起是哪部电影的话 你应该猜到，我这是在瞎写，如果你看到了这里，说明你也是够无聊的，我是谁，
+				一个来自香港的著名编剧，哈哈~~
+				</div>
+				<div class="box">
+					<header class="tit">
+						<span>查找</span>
+						<span>替换</span>
+						<strong class="close">✘</strong>
+					</header>
+					<ul id="boxlist">
+						<li>
+							<input type="text" class="itext"/>
+							<input type="button" value="查找"/>
+						</li>
+						<li>
+							<input type="text" class="itext"/>
+							<input type="text" class="itext"/>
+							<input type="button" value="替换" />
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="cright">
+				<div id="show">展开</div>
+				<ul id="list">
+					<li>查找</li>
+					<li>替换</li>
+				</ul>
+			</div>
+		</div>
+		<script>
+			var oCont = document.getElementsByClassName('content')[0];
+			var oShow = document.getElementById('show');
+			var oList = document.getElementById('list');
+			var arrLi = oList.getElementsByTagName('li');
+			var oBoxC = document.getElementsByClassName('box')[0];
+			var arrboxSpan = oBoxC.getElementsByTagName('span');
+			var oBoxlist = document.getElementById('boxlist');
+			var arrBoxli = oBoxlist.getElementsByTagName('li');
+			var arrBoxinput = oBoxlist.getElementsByTagName('input');
+			var oClose = document.getElementsByClassName('close')[0];
+			var oriStr = oCont.innerHTML;//原内容
+			//显示效果
+			oShow.onclick = function(){
+				oList.style.display = "block";
+			}
+			oClose.onclick = function(){
+				oBoxC.style.display = "none";
+				oList.style.display = "none";
+			}
+			function showthings(n){
+				arrLi[n].onclick = function(){
+					oList.style.display = "none";
+					oBoxC.style.display = "block";
+					for(var i=0; i<arrboxSpan.length; i++){
+						arrboxSpan[i].className = "";
+						arrBoxli[i].style.display = "";
+					}
+					arrboxSpan[n].className = "active";
+					arrBoxli[n].style.display = "block";
+				}
+			}
+			for(var i=0; i<arrLi.length; i++){
+				showthings(i);
+			}
+			function fnReplace(src, s, repstr, stylename){//被检测的字符串，被替换的字符串，替换的字符串，将要使用哪种样式来标记
+				if(s && src.indexOf(s)!=-1){
+					return src.split(s).join("<"+stylename+" style='background: pink;'>"+repstr+"</"+stylename+">");
+				}else{
+					return -1;
+				}
+			}
+			//查询效果
+			arrBoxinput[1].onclick = function(){
+				oCont.innerHTML = oriStr;
+				var str = arrBoxinput[0].value;//需要查询的值
+				var res = fnReplace(oCont.innerHTML, str, str,"strong");
+				if( res != -1){
+					oCont.innerHTML = res;
+					arrBoxinput[0].value = "";//清空输入栏里面的内容
+				}else{
+					alert(" i tried my best!");
+				}
+			}
+			//替换
+			arrBoxinput[4].onclick = function(){
+				oCont.innerHTML = oriStr;
+				var str1 = arrBoxinput[2].value;//被替换的值
+				var str2 = arrBoxinput[3].value;//替换的值
+				var res = fnReplace(oCont.innerHTML, str1, str2,"em");
+				if( res != -1){
+					oCont.innerHTML = res;
+					oriStr = res;
+					arrBoxinput[2].value = "";
+					arrBoxinput[3].value = "";
+				}else{
+					alert(" i tried my best!");
+				}
+			}
+		</script>
+	</body>
+</html>

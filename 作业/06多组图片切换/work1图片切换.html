@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	</head>
+	<body>
+		<div class="box clear">
+			<input type="button" id="btn1" value="上一组" />
+			<input type="button" id="btn2" value="下一组" />
+			<div id="contentl">
+				<img id="con_img1" src="img/1.jpg"/>
+				<p id="p1">这是第一组的第1张</p>
+				<span id="xb1">1/4</span>
+				<a id="lldj" href="javascript:;"></a>
+				<a id="lrdj" href="javascript:;"></a>
+			</div>
+			<div id="contentr">
+				<img id="con_img2" src="img/01.jpg"/>
+				<p id="p2">这是第二组的第1张</p>
+				<span id="xb2">1/3</span>
+				<a id="rldj" href="javascript:;"></a>
+				<a id="rrdj" href="javascript:;"></a>
+			</div>
+		</div>
+		<script>
+			var btn1 = document.getElementById('btn1');//上一组
+			var btn2 = document.getElementById('btn2');//下一组
+			var leftNum = document.getElementById('xb1');//左边的图片的顺序
+			var rightNum = document.getElementById('xb2');//右边的图片的顺序
+			var leftDesc = document.getElementById('p1');//左边图片的描述信息
+			var rightDesc = document.getElementById('p2');//右边图片的描述信息
+			var leftImg = document.getElementById('con_img1');//左边的图片
+			var rightImg = document.getElementById('con_img2');//右边的图片
+		 	var arrCleft = ["img/1.jpg","img/2.jpg","img/3.jpg","img/4.jpg"];//	左边的图片库
+		 	var arrCright = ["img/01.jpg","img/02.jpg","img/03.jpg"];//右边的图片库
+			var contentl = document.getElementById('contentl');//左边的图片内容
+			var contentr = document.getElementById('contentr');//右边的图片内容
+			var lldj = document.getElementById('lldj');//点击左边图片的左半边
+			var lrdj = document.getElementById('lrdj');//点击左边图片的右半边
+			var rldj = document.getElementById('rldj');//点击左边图片的左半边
+			var rrdj = document.getElementById('rrdj');//点击左边图片的右半边
+			//初始化，给左边和右边的图片各自添加一个技术的变量
+			contentl.lnum = 0;
+			contentr.rnum = 0;
+			//左边的描述信息显示函数
+			function fnleftinfo(){
+				leftImg.src = arrCleft[contentl.lnum];
+				leftDesc.innerHTML = "这是第一组的第"+(contentl.lnum+1)+"张";
+				leftNum.innerHTML = (contentl.lnum+1)+"/"+arrCleft.length;
+			}
+			//右边的描述信息的显示函数
+			function fnrightinfo(){
+				rightImg.src = arrCright[contentr.rnum];
+				rightDesc.innerHTML = "这是第一组的第"+(contentr.rnum+1)+"张";
+				rightNum.innerHTML = (contentr.rnum+1)+"/"+arrCright.length;
+			}
+			
+			//左图
+			//点击左边图片的左半边
+			function fnlldj(){
+				contentl.lnum--;
+				if(contentl.lnum < 0){
+					contentl.lnum = arrCleft.length-1;
+				}
+				fnleftinfo();
+			}
+			lldj.onclick =  fnlldj;
+			//点击左边图片的右半边
+			function fnlrdj(){
+				contentl.lnum++;
+				if(contentl.lnum > arrCleft.length-1){
+					contentl.lnum = 0;
+				}
+				fnleftinfo();
+			}
+			lrdj.onclick = fnlrdj;
+			
+			//右图
+			//点击左边图片的左半边
+			function fnrldj(){
+				contentr.rnum--;
+				if(contentr.rnum < 0){
+					contentr.rnum = arrCright.length-1;
+				}
+				fnrightinfo();
+			}
+			rldj.onclick = fnrldj;
+			//点击左边图片的右半边
+			function fnrrdj(){
+				contentr.rnum++;
+				if(contentr.rnum > arrCright.length-1){
+					contentr.rnum = 0;
+				}
+				fnrightinfo();
+			}
+			rrdj.onclick = fnrrdj;
+			//点击上一组
+			btn1.onclick = function(){
+				fnlldj();
+				fnrldj();
+			}
+			//点击下一组
+			btn2.onclick = function(){
+				fnlrdj();
+				fnrrdj();
+			}
+		</script>
+	</body>
+</html>

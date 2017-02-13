@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        form {
+            margin: 10px 0;
+        }
+        td {
+            text-align: center;
+        }
+        .pColor{/*单数行*/
+        	background: pink;
+        }
+        .gColor{/*偶数行*/
+        	background: greenyellow;
+        }
+        .cColor{/*选中行*/
+        	background: deeppink;
+        }
+        .iColor{/*移入行*/
+        	background: #8E8E8E;
+        }
+    </style>
+</head>
+
+<body>
+	<form>
+	    <input type="text" name="username" value="12"/>
+	    <select name="sex">
+	        <option value="">请选择一个性别</option>
+	        <option value="男">男</option>
+	        <option value="女">女</option>
+	    </select>
+	    <input type="text" name="age" value="12"/>
+	    <input type="button" value="提交">
+	</form>
+<!--选做-->
+	<p>
+	    <select name="orderName">
+	        <option value="">选择一个排序字段</option>
+	        <option value="id">编号</option>
+	        <option value="age">年龄</option>
+	    </select>
+	    <select name="orderBy">
+	        <option value="">选择一个排序方式</option>
+	        <option value="asc">升序</option>
+	        <option value="desc">降序</option>
+	    </select>
+	    <input type="button" value="排序">
+	</p>
+	<table border="1" width="100%" id="tab1">
+	    <thead>
+	    <tr>
+	        <th>全选 <input type="checkbox" name="checkAll"></th>
+	        <th>编号</th>
+	        <th>姓名</th>
+	        <th>性别</th>
+	        <th>年龄</th>
+	        <th>操作</th>
+	    </tr>
+	    </thead>
+	    <tbody></tbody>
+	</table>
+	<script>
+        /*
+        * 1.通过表单，可以添加数据到表格中显示
+        * 2.id自动根据已有的最大id值进行累加，删除一条记录的时候
+        * 3.隔行变色，新增加的行应该也需要隔行变色的
+        * 4.鼠标移入高亮
+        * 5.全选/全不选（checkAll和下面的每一个checkbox是有关联的）
+        * 6.选中变色
+        * 7.上移/下移
+        * 8.删除
+        * 9.选做：排序
+        * */
+        var data = [
+            {
+                id: 1,
+                name : '刘伟',
+                sex : '男',
+                age : 32
+            },
+            {
+                id: 2,
+                name : '莫涛',
+                sex : '男',
+                age : 28
+            },
+            {
+                id: 3,
+                name : '小美',
+                sex : '女',
+                age : 18
+            },
+            {
+                id: 4,
+                name : '刘伟',
+                sex : '男',
+                age : 32
+            },
+            {
+                id: 5,
+                name : '莫涛',
+                sex : '男',
+                age : 28
+            },
+            {
+                id: 6,
+                name : '小美',
+                sex : '女',
+                age : 18
+            }
+        ];
+	   	var Tab1 = document.getElementById('tab1');
+	   	var tbody = Tab1.tBodies[0];
+	   	var thead = Tab1.tHead;
+	   	var selAll = thead.rows[0].cells[0].firstElementChild;//全选
+	   	
+	   	function CreateEle(names,types,val){//创建节点，参数分别是节点的名字、类型和内容
+	   		var tmp = document.createElement(names);
+	   		if(types){
+	   			tmp.type = types;
+	   		}
+	   		if(val){
+	   			tmp.value = val;
+	   		}
+	   		return tmp;
+	   	}
+	   	
+	   	function fnCreateTab(arr){//创建表格
+	   		tbody.innerHTML = "";
+	   		for(var i=0; i<arr.length; i++){
+		   		var trow = CreateEle("tr");//td节点
+		   		if(i%2 == 0){//单数行变色
+		   			trow.className = "pColor";
+		   		}else{
+		   			trow.className = "gColor";
+		   		}
+		   		var td = CreateEle("td");//td节点
+		   		trow.appendChild( td );
+		   		var tinp = CreateEle("input","checkbox");//单选框节点
+		   		td.appendChild( tinp );
+		   		for(var a in arr[i]){
+		   			td = CreateEle("td");
+		   			td.innerHTML = arr[i][a];
+		   			trow.appendChild( td );
+		   		}
+		   		td = CreateEle("td");
+		   		trow.appendChild( td );
+		   		var tinp1 = CreateEle("input", "button", "上移");
+		   		var tinp2 = CreateEle("input", "button", "下移");
+		   		var tinp3 = CreateEle("input", "button", "删除");
+		   		td.appendChild( tinp1 );
+		   		td.appendChild( tinp2 );
+		   		td.appendChild( tinp3 );
+		   		tbody.appendChild( trow );
+	   		}
+	   		fnOnclick();
+	   	}
+	   	function fn(){//根据元素的序号给其着色
+	   		for(var i=0; i<tbody.rows.length; i++){
+		   		if(tbody.rows[i]){
+					if(tbody.rows[i].cells[0].firstElementChild.checked){
+						tbody.rows[i].className = "cColor";
+					}else{
+						if(i%2){
+							tbody.rows[i].className = "gColor";
+						}else{
+							tbody.rows[i].className = "pColor";
+						}
+					}
+	   			}
+		   }
+	   	}
+	   	function setChecked(opt){//当点击全选的时候，将所有的复选框设置为checked
+	   		for(var i=0; i<tbody.rows.length; i++){
+	   			tbody.rows[i].cells[0].firstElementChild.checked = opt;//一定要是孩子元素节点
+	   			if(opt){
+	   				tbody.rows[i].className = "cColor";
+	   			}else{
+	   				fn();
+	   			}
+	   		}
+	   	}
+	   	
+   		function ifCkall(){//如果全部的复选框被选，则将全选勾上
+	   		for(var i=0; i<tbody.rows.length; i++){
+	   			if(tbody.rows[i].cells[0].firstElementChild.checked == ""){
+	   				break;
+	   			}
+	   		}
+	   		return i==tbody.rows.length;
+	   	}
+   		
+	   	fnCreateTab(data);//生成结构
+	   	selAll.onclick = function(){//点击全选复选框
+	   		if(this.checked){
+	   			setChecked("true");
+	   		}else{
+	   			setChecked("");//这里不能是false
+	   		}
+	   	}
+	   	function fnOnclick(){
+	   		for(var i=0; i<tbody.rows.length; i++){
+		   		tbody.rows[i].cells[0].firstElementChild.onclick = function(){//为每行的单选框绑定点击事件处理函数
+		   			if(this.checked){
+		   				this.parentElement.parentElement.className = "cColor";
+		   				if(ifCkall()){
+		   					selAll.checked = "true";
+		   				}
+		   			}else{
+		   				selAll.checked = "";
+		   				fn();
+		   			}
+		   		}
+		   		
+		   		var clast = tbody.rows[i].cells.length-1;
+		   		
+		   		var toUp = tbody.rows[i].cells[clast].children[0];//上移
+		   		var toDown = tbody.rows[i].cells[clast].children[1];//下移
+		   		var toDele = tbody.rows[i].cells[clast].children[2];//删除
+		   		
+		   		toUp.onclick = function(){//上移
+		   			var t = this.parentElement.parentElement;
+		   			
+		   			if(t.previousElementSibling){
+		   				tbody.insertBefore(t,t.previousElementSibling);
+		   			}
+		   			
+		   		}
+		   		
+		   		toDown.onclick = function(){//下移
+		   			var t = this.parentElement.parentElement;
+		   			if(t.nextElementSibling){
+		   				tbody.insertBefore(t,t.nextElementSibling.nextSibling);
+		   			}
+		   			for(var i=0; i<tbody.rows.length; i++){
+		   				fn();
+		   			}
+		   		}
+		   		
+		   		toDele.onclick = function(){//删除
+		   			if(this){
+		   				var t = this.parentElement.parentElement;
+			   			if(t){
+			   				tbody.removeChild(t);
+			   			}
+			   			for(var i=0; i<data.length; i++){//找到要删除的元素
+			   				if(data[i]["id"] == this.parentElement.parentElement.cells[1].innerHTML){
+			   					data.splice(i,1);//将其移除
+			   				}
+			   			}
+			   			console.log(data);
+			   			fn();
+		   			}
+		   		}
+		   		
+		   		tbody.rows[i].onmouseover = function(){
+		   			if(this){
+		   				if(this.className != "cColor"){
+			   				this.className = "iColor";
+			   			}
+		   			}
+		   		}
+		   		
+		   		tbody.rows[i].onmouseout = function(){
+		   			if(this){
+		   				fn();
+		   			}
+		   		}
+	   		}
+	   	}
+	   //点击提交按钮将数据存储在表格中
+	   var Form = document.getElementsByTagName("form")[0];
+	   var arrInp = Form.getElementsByTagName('input');
+	   var sel = Form.getElementsByTagName('select')[0];
+	   
+	   var num= data[data.length-1].id;
+	   arrInp[2].onclick = function(){
+		   	var brr = {};//将信息存在包含对象的数组中
+		   	brr.id = ++num;//编号
+		   	brr.name = arrInp[0].value;//第一个输入框内写名字
+		   	brr.sex = sel.value; //性别
+		   	brr.age = Number(arrInp[1].value);//年龄,要转换成数字，不然的话会进行字符串的比较
+		   	console.log(brr);
+		   	data.push(brr);
+		   	fnCreateTab(data);
+	   }
+	   
+	   var oP = document.getElementsByTagName('p')[0];
+	   var arrSel = oP.getElementsByTagName('select');
+	   var oSort = oP.getElementsByTagName('input')[0];
+	   function bubSort(arr,a){
+	   		for(var i=0; i<arr.length-1; i++){//自己写的排序，因为数组内置的排序有问题
+	   			for(var j=0; j<arr.length-1-i; j++){
+	   				if(arr[j][a] > arr[j+1][a]){//从大到小
+	   					var tmp = arr[j];
+	   					arr[j] = arr[j+1];
+	   					arr[j+1] = tmp;
+	   				}
+	   			}
+	   		}
+	   		return arr;
+	   }
+	   function giveSort(brr, n, s){//第一个参数是排序的对象，第二个参数是排序是根据元素的什么属性，第三个参数是升序否bubSort(arr);
+	   		console.log(brr);
+	   		
+	   		if(brr == ""){
+	   			return;
+	   		}
+	   		if(n=="" || n=="id"){//默认按id的方式排序
+   				n = "id";
+   			}
+	   		if(s){//升序
+	   			return bubSort(brr, n);
+	   		}else{
+	   			return bubSort(brr, n).reverse();
+	   		}
+	   		
+//	   		brr.sort(function(a,b){
+////	   			if(true){//开关为开对应升序
+//	   					return a.id>b.id;
+////	   				return a.id-b.id;
+////	   			}else{
+////	   				return a[n]<a[n];
+////	   			}
+//	   		});
+
+	   }
+	   oSort.onclick = function(){
+	   		var sortFor = arrSel[0].value;//排序方式
+	   		var onoff = arrSel[1].value == "asc" ? true : false;//开关为true则是升序，反之降序
+//	   		console.log();
+	   		giveSort(data, sortFor, onoff);
+	   		fnCreateTab(data);
+	   		for(var a = 0;a<data.length;a++ ){
+	   			console.log(data[a].id);
+	   		}
+	   }
+    </script>
+</body>
+</html>

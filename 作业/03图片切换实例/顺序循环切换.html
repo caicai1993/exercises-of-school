@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>图片切换实例综合</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: '微软雅黑';
+    }
+    
+    html,
+    body {
+        height: 100%;
+    }
+    
+    a {
+        text-decoration: none;
+    }
+    
+    body {
+        background: url(img/bg.jpg) no-repeat center;
+    }
+    
+    #centerBox {
+        width: 678px;
+        height: 504px;
+        border: 1px solid #d8d7db;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        margin-left: -340px;	/*//绝对定位使box居中,定位到50%,再margin掉自身高度/宽度的一般*/
+        margin-top: -253px;
+        border-radius: 16px;
+        background: #f9f8fd url(img/miaov.png) no-repeat 615px 227px;
+        box-shadow: 6px 6px 10px #b58bd9;
+    }
+    
+    .line {
+        width: 4px;
+        height: 58px;
+        border: 1px solid #dcdcdc;
+        border-radius: 2px;
+        background: #fff;
+        position: absolute;
+        left: 20px;
+        top: 222px;
+    }
+    
+    #tabBox {
+        width: 560px;
+        height: 410px;
+        border: 1px solid #dcdcdc;
+        margin: 47px 0 0 44px;
+        background: #000000;
+    }
+    
+    #tabBox h2 {
+        height: 36px;
+        padding: 15px 0 0 150px;
+    }
+    
+    #tabBox h2 a {
+        float: left;
+        width: 130px;
+        height: 34px;
+        border: 1px solid #dcdcdc;
+        border-radius: 2px;
+        font-size: 16px;
+        color: #fff;
+        text-align: center;
+        font-weight: normal;
+        line-height: 34px;
+        margin-left: -1px;
+    }
+    
+    #tabBox h2 .active {
+        background: #fff;
+        color: #000;
+    }
+    
+    #tabBox p {
+        height: 44px;
+        text-align: center;
+        font-size: 14px;
+        color: #8e8e8e;
+        line-height: 38px;
+    }
+    
+    #imgBox {
+        position: relative;
+        width: 550px;
+        margin: 0 auto;
+    }
+    
+    #imgBox span,
+    #imgBox strong,
+    #imgBox em {
+        position: absolute;
+        width: 100%;
+        line-height: 34px;
+        height: 34px;
+        text-align: center;
+        font-size: 16px;
+        color: #fff;
+        left: 0;
+    }
+    
+    #imgBox span {
+        background: url(img/spanbg.png) no-repeat;
+        height: 43px
+    }
+    
+    #imgBox a {
+        position: absolute;
+        width: 35px;
+        height: 50px;
+        opacity: 0.6;
+        filter: alpha(opacity=60);
+        top: 130px;
+        text-align: center;
+    }
+    
+    #imgBox a img {
+        padding: 12px 0 0 0px;
+    }
+    
+    #imgBox a:hover {
+        background: #000;
+    }
+    
+    #imgBox strong,
+    #imgBox em {
+        bottom: 0;
+        font-weight: normal;
+    }
+    
+    #imgBox em {
+        opacity: 0.6;
+        filter: alpha(opacity=60);
+        background: #000;
+        left: 0;
+        bottom: 0;
+    }
+    
+    #next {
+        right: 0;
+    }
+    
+    #tanBox {
+        position: absolute;
+        width: 298px;
+        height: 148px;
+        left: 50%;
+        top: 50%;
+        margin-left: -149px;
+        margin-top: -74px;
+        border: 1px solid #93908d;
+        display: none;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, .5);
+    }
+    
+    #tanBox span {
+        position: absolute;
+        right: 14px;
+        top: 14px;
+        cursor: pointer;
+    }
+    
+    #tanBox em {
+        background: #000;
+        opacity: 0.6;
+        filter: alpha(opacity=60);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+    
+    #tanBox p {
+        font-size: 18px;
+        color: #fff;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        top: 31px;
+        line-height: 27px;
+    }
+    
+    #tanBox strong {
+        position: absolute;
+        width: 100%;
+        height: 44px;
+        font-size: 14px;
+        color: #93908d;
+        top: 58px;
+        text-align: center;
+        line-height: 44px;
+    }
+    
+    #tanBox a {
+        width: 80px;
+        height: 25px;
+        border: 1px solid #fff;
+        border-radius: 2px;
+        line-height: 25px;
+        text-align: center;
+        bottom: 19px;
+        left: 106px;
+        position: absolute;
+        font-size: 14px;
+        color: #fff;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="centerBox">
+        <span class="line"></span>
+        <div id="tabBox">
+            <h2>
+				<a href="javascript:void(0);">循环切换</a>
+				<a href="javascript:void(0);">顺序切换</a>
+			</h2>
+            <p>图片可以从最后一张跳转到第一张循环切换</p>
+            <div id="imgBox">
+                <span>图片数量计算中……</span>
+                <img src="img/img01.jpg">
+                <a href="javascript:void(0);" id="prev"><img src="img/prev.png" /></a>
+                <a href="javascript:void(0);" id="next"><img src="img/next.png" /></a>
+                <em></em>
+                <strong>图片文字加载中……</strong>
+            </div>
+        </div>
+        <div id="tanBox">
+            <em></em>
+            <span><img src="img/close.png"/></span>
+            <p>JavaScript提醒</p>
+            <strong>已经到最后一张啦～</strong>
+            <a href="javascript:void(0);">确定</a>
+        </div>
+    </div>
+    <script>
+//  	需求:(1)图片默认在循环切换按钮上;点击左键,循环去到上一张;点击右键,循环切换到图片的下一张;
+//  		(2)点击按钮顺序切换,按钮颜色高亮;在此时点击左键,顺序切换到上一张;点击右键,循环切换到下一张;
+//  		(3)当点击到第一张,再往上点就弹出提示框,并且在弹出提示框的时候,左键不可再点;
+//  		(4)当点击到最后一张的时候,再往上点就弹出提示框,并且在弹出提示框的时候,左键不可再点;
+//  		(5)当弹出框出现的时候;点击确定和小叉叉都能关掉按钮;
+//			(6)当弹出框出现时，上面的Btn按钮不可以切换,点击左右按钮也没有反应
+		var imgBox = document.getElementById('imgBox');//图片框
+		var imgNum = imgBox.getElementsByTagName('span')[0];//图片计数
+		var imgDesc = imgBox.getElementsByTagName('strong')[0];//图片描述
+		var oImg = imgBox.getElementsByTagName('img')[0];//图片
+		var otabBox = document.getElementById('tabBox');//大框
+		var otabDesc = document.getElementsByTagName('p')[0];//大框的提示信息
+		var btnCycle = otabBox.getElementsByTagName('a')[0];//循环按钮
+		var btnOrder = otabBox.getElementsByTagName('a')[1];//顺序按钮
+		var otanBox = document.getElementById('tanBox');//弹出框
+		var oSure = otanBox.getElementsByTagName('a')[0];//弹出框上的确定按钮
+		var oXx = otanBox.getElementsByTagName('span')[0];//弹出框上的小叉叉
+		var arrImg = ["img/img01.jpg","img/img02.jpg","img/img03.jpg","img/img04.jpg"];//图片的数组
+		var arrDesc = ["img1","img2","img3","img4"];//图片描述信息的数组
+		var onoff = true;//开关为开的时候是循环切换
+		var prev = document.getElementById('prev');//切换到上一张
+		var next = document.getElementById('next');//切换到下一张
+		var num = 0;//用于计数
+		var tanDesc = otanBox.getElementsByTagName('strong');
+		var bigOnoff = true;//控制Btn的大开关
+		//初始化
+		btnCycle.className = "active";
+		otabDesc.innerHTML = "";
+		otabDesc.innerHTML = "图片可以从最后一张跳转到第一张循环切换";
+		show();
+		function show(){
+			oImg.src = arrImg[num];
+			imgNum.innerHTML = (num+1)+'/'+arrImg.length;
+			imgDesc.innerHTML = arrDesc[num];
+		}
+		//切换到上一张
+		function fnprev(){
+			num--;
+			if(num < 0){
+				if(onoff){
+					num = arrImg.length-1;
+				}else{
+					num = 0;
+					otanBox.style.display = "block";
+					tanDesc.innerHTML = "这已经是第一张图片了！";
+					bigOnoff = false;
+				}
+			}
+			show();
+		}
+		//切换到下一张
+		function fnnext(){
+			num++;
+			if(num > arrImg.length-1){
+				if(onoff){
+					num = 0;
+				}else{
+					num = arrImg.length-1;
+					otanBox.style.display = "block";
+					tanDesc.innerHTML = "这已经是最后一张图片了！";
+					bigOnoff = false;
+				}
+			}
+			show();
+		}
+		//点击左键
+		prev.onclick = function(){
+			if(bigOnoff){
+				fnprev();
+			}
+		}
+		//点击右键
+		next.onclick = function(){
+			if(bigOnoff){
+				fnnext();
+			}
+		}
+    	//点击循环按钮
+    	btnCycle.onclick = function(){
+    		if(bigOnoff){
+	    		btnOrder.className = "";
+	    		btnCycle.className = "active";
+	    		otabDesc.innerHTML = "图片可以从最后一张跳转到第一张循环切换";
+	    		onoff = true;
+    		}
+    	}
+		//点击顺序按钮
+    	btnOrder.onclick = function(){
+    		if(bigOnoff){
+    			btnCycle.className = "";
+	    		btnOrder.className = "active";
+	    		otabDesc.innerHTML = "图片只能从最后一张跳或第一张切换";
+	    		onoff = false;
+    		}
+    		
+    	}
+		//点击弹出框的确认按钮时，弹出款消失
+		oSure.onclick = function(){
+			otanBox.style.display = "none";
+			bigOnoff = true;
+		}
+		//点击弹出框的小叉叉，弹出框消失
+    	oXx.onclick = function(){
+			otanBox.style.display = "none";
+			bigOnoff = true;
+		}
+    </script>
+</body>
+</html>

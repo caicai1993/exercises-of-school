@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#wrap{
+				width: 100%;
+				margin: 50px 0 0 400px;	
+			}
+			li{
+				width: 400px;
+				height: 80px;
+				font: 40px/200px "微软雅黑";
+				list-style: none;
+			}
+			span{
+				background: burlywood;
+				border: 5px solid #00BFFF;
+			}
+		</style>
+	</head>
+	<body>
+		<ul id="wrap">
+			<li>1111
+				<span>上移</span>
+				<span>下移</span>
+			</li>
+			<li>2222
+				<span>上移</span>
+				<span>下移</span>
+			</li>
+			<li>3333
+				<span>上移</span>
+				<span>下移</span>
+			</li>
+			<li>4444
+				<span>上移</span>
+				<span>下移</span>
+			</li>
+		</ul>
+		<script>
+			var oList = document.getElementById('wrap');
+			var aLi = oList.children;
+			for(var i=0; i<aLi.length; i++){
+				var toUp = aLi[i].children[0];//上移的span
+				var toDown = aLi[i].children[1];//下移的span
+				toUp.onclick = function(){
+					var innode = this.parentNode;
+					var tmp = innode.previousElementSibling;
+					if(!tmp){//是第一个元素的时候
+						tmp = aLi[0];
+					}
+					oList.insertBefore(innode, tmp);
+				}
+				
+				toDown.onclick = function(){
+					var innode = this.parentNode;
+					var tmp = null;
+					if(innode.nextElementSibling){
+						tmp = innode.nextElementSibling.nextElementSibling;
+					}else{
+						tmp = null;
+					}
+					
+					oList.insertBefore(innode, tmp);
+				}
+			}
+		</script>
+	</body>
+</html>

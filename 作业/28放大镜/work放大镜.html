@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.wrap{
+				width: 400px;
+				height: 400px;
+				background: url(img/small.jpg) no-repeat;
+				background-size: 400px 400px;
+				border: 5px dashed #B58BD9;
+				float: left;
+				position: relative;
+			}
+			.wrap span{
+				width: 194px;
+				height: 194px;
+				border: 3px solid #fff;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			.bigbox{
+				width: 500px;
+				height: 500px;
+				background: url(img/big.jpg) no-repeat;
+				background-size: 1000px 1000px;
+				border: 5px solid pink;
+				float: left;
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<span></span>
+		</div>
+		<div class="bigbox"></div>
+		<script>
+			var aDiv = document.getElementsByTagName("div");
+			var oSpan = document.getElementsByTagName("span")[0];
+			var aleft = 0;
+			var atop = 0;
+			aDiv[0].onmousemove = function(e){
+				aleft = e.clientX-100;
+				atop = e.clientY-100;
+				if(aleft<0){
+					aleft = 0;
+				}else if(aleft>200){
+					aleft = 200;
+				}
+				
+				if(atop<0){
+					atop = 0;
+				}else if(atop>200){
+					atop = 200;
+				}
+				
+				oSpan.style.left = aleft+"px";
+				oSpan.style.top = atop+"px";
+				console.log((aleft/400*1000),(atop/400*1000));
+				aDiv[1].style.display = "block";
+				aDiv[1].style.backgroundPosition = -(aleft/400*1000)+"px "+-(atop/400*1000)+"px";
+			}
+			aDiv[0].onmouseout = function(){
+				aDiv[1].style.display = "none";
+			}
+		</script>
+	</body>
+</html>

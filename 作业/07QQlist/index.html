@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body,
+			ul,
+			li,
+			h2 {
+				margin: 0;
+				padding: 0;
+			}
+			
+			li {
+				list-style: none;
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="qq.css" />
+	</head>
+	<body onselectstart="return false;">
+		<div class="wrap">
+			<div class="list">
+				<h2><span></span>我的好友</h2>
+				<ul>
+					<li>小佳Love</li>
+					<li>从来就是这么正经</li>
+					<li>leo是个胖子</li>
+					<li>momo不是陌陌</li>
+				</ul>
+				<h2><span></span>企业好友</h2>
+				<ul>
+					<li>习近平</li>
+					<li>普京</li>
+					<li>奥巴马</li>
+				</ul>
+				<h2><span></span>黑名单</h2>
+				<ul>
+					<li>安倍</li>
+					<li>杜特尔特</li>
+				</ul>
+			</div>
+		</div>
+		<script>
+		//找到分组列表
+			var oList = document.getElementsByTagName('div')[1];
+			var arrType = oList.getElementsByTagName('h2');
+			var arrUl = oList.getElementsByTagName('ul');
+			var perarrLi ="";
+			var arrLi = "";
+			
+			//用于记载上一次被点击的li
+			var lastli = 0;
+			//用于记载上一次被点击的ul
+			var lastul = 0;
+			//清除ul上一次的格式
+			var num = 0;
+			function lastdisappear(){
+				var lastxiaojianjian = arrType[lastul].getElementsByTagName('span')[0];
+				lastxiaojianjian.className = "";
+				arrUl[lastul].className = "";
+				arrUl[lastul].style.display = "";
+				arrType[lastul].className = "";
+			}
+			for(var i=0; i<arrType.length; i++){
+				//给每个分组添加开关;当开关处于开的状态则可以则为红色
+				arrType[i].onoff = true;
+				//给每个分组添加索引值
+				arrType[i].index = i;
+				//给每个分组绑定点击事件处理函数
+				arrType[i].onclick = function(){
+					var xiaojianjian = this.getElementsByTagName('span')[0];
+					//清空上一个
+					lastdisappear();
+					if(this.onoff){
+						//ul高亮
+						this.className = "active";
+						//点击的时候小尖尖是向下的
+						xiaojianjian.className = "active";
+						//让相对应的ul显示出来
+						arrUl[this.index].style.display = "block";
+						this.onoff = false;
+					}else{
+						//ul高亮取消
+						this.className = "";
+						//点击的时候小尖尖是向下的取消
+						xiaojianjian.className = "";
+						//让相对应的ul隐藏起来
+						arrUl[this.index].style.display = "none";
+						this.onoff = true;
+					}
+					lastul = this.index;
+				}
+				
+	//			给每个ul里面的li添加鼠标点击和鼠标移入效果
+				perarrLi = arrUl[i].getElementsByTagName('li');
+				//为li添加鼠标移入事件处理函数
+				for(var j=0; j<perarrLi.length; j++){
+					arrLi.index = num++;
+					arrLi += perarrLi;
+					perarrLi[j].onmouseover = function(){
+						if(this.className !== "selected"){
+						this.className = "active";
+						}
+					}
+	//				为li添加鼠标移出事件处理函数
+					perarrLi[j].onmouseout = function(){
+						if(this.className === "active"){
+							this.className = "";
+						}
+					}
+					//鼠标点击
+					perarrLi[j].onclick = function(){
+						this.className = "selected";
+						lastli = this.index;
+					}
+				}
+			}
+		</script>
+	</body>
+</html>

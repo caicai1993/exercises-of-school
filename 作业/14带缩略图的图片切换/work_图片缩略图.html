@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			li{
+				list-style: none;
+			}
+			a{
+				text-decoration: none;
+			}
+			#wrap{
+				width: 600px;
+				height: 450px;
+				border: 5px solid #008000;
+				margin: 50px auto;
+				position: relative;
+				background:lightpink;
+				padding: 20px;
+			}
+			#wrap>a{
+				width: 50px;
+				height: 50px;
+				font: bold 50px/50px "微软雅黑";
+				text-align: center;
+				color: #fff;
+				background: palegreen;
+				border-radius: 50%;
+				position: absolute;
+				top: 195px;
+			}
+			#wrap .tleft{
+				left: 30px;
+			}
+			#wrap .tright{
+				right: 30px;
+			}
+			#wrap>img{
+				width: 600px;
+				height: 400px;
+			}
+			#wrap #list{
+				width: 200px;
+				height: 50px;
+				/*background: yellow;*/
+				text-align: center;
+				position: absolute;
+				left: 225px;
+				bottom: 0;
+			}
+			#list>li{
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				background: darkgrey;
+				float: left;
+				position: relative;
+				margin-right: 10px;
+			}
+			#list img{
+				width: 120px;
+				height: 80px;
+				position: absolute;
+				left: -50px;
+				bottom: 20px;
+				display: none;
+			}
+			#list img.active{
+				display: block;
+			}
+			#list>li.show{
+				background: orange;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<img src="img/img1.gif"/>
+			<a href="javascript:;" class="tleft">＜</a>
+			<a href="javascript:;" class="tright">＞</a>
+			<ul id="list">
+			</ul>
+		</div>
+		<script>
+			var oWrap = document.getElementById('wrap');
+			var arrAs = oWrap.getElementsByTagName('a');//向左向右
+			var bigImg = oWrap.getElementsByTagName('img')[0];//大图片
+			var oList = document.getElementById('list');
+			var arrLi = oList.getElementsByTagName('li');
+			var arrSmallImg = oList.getElementsByTagName('img');//小图片
+			var arrImg = ["img/img1.gif","img/img2.gif","img/img3.gif","img/img4.gif","img/img5.gif","img/img6.gif"];
+			var num = 0;//计数器
+			var last = 0;
+			var lastSmall = 0;//小计数器
+			//下面的小点和他对应的图片
+			var strLi = "";
+			for(var i=0; i<arrImg.length; i++){
+				if(i == 0){
+					strLi += "<li><img src='"+arrImg[i]+"'/></li>";
+				}else{
+					strLi += "<li><img src='"+arrImg[i]+"'/></li>";
+				}
+				
+			}
+			oList.innerHTML = strLi;
+			
+			//点击上一张
+			function fnShow(){
+				bigImg.src = arrImg[num];
+				arrLi[last].className = "";
+				arrLi[num].className = "show";
+				last = num;
+			}
+		
+			fnShow();
+			//点击上一张
+			arrAs[0].onclick = function(){
+				num--;
+				if(num < 0){
+					num = arrImg.length-1;
+				}
+				fnShow();
+			}
+			//点击下一张
+			arrAs[1].onclick = function(){
+				num++;
+				num %= arrImg.length;
+				fnShow();
+			}
+			//给li的移入事件添加处理函数
+			for(var i=0; i<arrLi.length; i++){
+				arrLi[i].index = i;
+				arrLi[i].onmouseover = function(){
+					arrSmallImg[this.index].className = 'active';
+					lastSmall = this.index;
+				}
+				arrLi[i].onmouseout = function(){
+					arrSmallImg[lastSmall].className = '';
+				}
+				arrLi[i].onclick = function(){
+					num = this.index;
+					fnShow();
+					last = this.index;
+				}
+			}
+		</script>
+	</body>
+</html>

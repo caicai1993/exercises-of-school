@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#box{
+				width: 100px;
+				height: 100px;
+				background: pink;
+				position: absolute;
+				left: 250px;
+				top: 150px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+		<script>
+			var box = document.getElementById("box");
+			var onoff = true;//开关为true的时候才可以变鼠标指针
+			box.onmousemove = function(e){
+				if(!onoff){
+					return;
+				}
+				var dir = "";
+				var pos = box.getBoundingClientRect();
+				box.style.cursor = "default";
+				if(pos.top+10 > e.clientY){
+					dir += "n";
+				}
+				if(pos.bottom-10 < e.clientY){
+					dir += "s";
+				}//外国人的习惯，先南北后东西
+				if(pos.left+10 > e.clientX ){
+					dir += "w";
+				}
+				if(pos.right-10 < e.clientX){
+					dir += "e";
+				}
+				box.style.cursor = dir + "-resize";
+				document.onmousedown = function(e){
+					onoff = false;
+					var oldW = box.clientWidth;
+					var oldH = box.clientHeight;
+					var oldX = e.clientX;
+					var oldY = e.clientY;
+					var disx = e.clientX - box.offsetLeft;
+					var disy = e.clientY - box.offsetTop;
+					document.onmousemove = function(e){
+						if(dir.indexOf("e") != -1){
+							box.style.width = e.clientX - oldX + oldW + "px";
+						}
+						if(dir.indexOf("w") != -1){
+							box.style.width = oldX - e.clientX + oldW + "px";
+							box.style.left = e.clientX - disx + "px";
+						}
+						if(dir.indexOf("n") != -1){
+							box.style.height = oldY - e.clientY  + oldH + "px";
+							box.style.top = e.clientY - disy + "px";
+						}
+						if(dir.indexOf("s") != -1){
+							box.style.height = e.clientY - oldY + oldH + "px";
+						}
+					}
+					document.onmouseup = function(){
+						onoff = true;
+						document.onmousemove = null;
+					}
+				}
+			}
+		</script>
+	</body>
+</html>

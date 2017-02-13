@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#box{
+				width: 290px;
+				height: 490px;
+				background: url(img/bg1.png) no-repeat;
+				margin: 0 auto;
+				border: 1px solid #000000;
+				text-align: center;
+			}
+			#mesbody{
+				width: 250px;
+				height: 250px;
+				margin: 70px 0 100px 20px;
+				/*background: yellow;*/
+				position: relative;
+			}
+			#change{
+				width: 116px;
+				height: 38px;
+			}
+			#mesbody div{
+				width: 50px;
+				height: 50px;
+				font: bold 24px/50px "微软雅黑";
+				background: #fff;
+				color: blue;
+				position: absolute;
+				transition: 1s;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="mesbody"></div>
+			<input type="button" id="change" value="变换"/>
+		</div>
+		<script>
+			var box = document.getElementById('box');
+			var btn = document.getElementById('change');
+			var mesbody = document.getElementById('mesbody');
+			var num = 0;
+			//向上
+			function fnup(){
+				mesbody.innerHTML = '';
+				for(var i=0; i<5; i++){
+					if(i<3){
+						mesbody.innerHTML += "<div style='left:"+i*50+"px; top:"+ (4-i)*50 +"px;'>"+(i+1)+"</div>";
+					}else{
+						mesbody.innerHTML += "<div style='left:"+i*50+"px; top:"+ i*50 +"px;'>"+(i+1)+"</div>";
+					}
+				}
+			}
+			//向下
+			function fndown(){
+				mesbody.innerHTML = '';
+				for(var i=0; i<5; i++){
+					if(i<3){
+						mesbody.innerHTML += "<div style='left:"+i*50+"px; top:"+ i*50 +"px;'>"+(i+1)+"</div>";
+					}else{
+						mesbody.innerHTML += "<div style='left:"+i*50+"px; top:"+ (4-i)*50 +"px;'>"+(i+1)+"</div>";
+					}
+				}
+			}
+			//向左
+			function fnleft(){
+				mesbody.innerHTML = '';
+				for(var i=0; i<5; i++){
+					if(i<3){
+						mesbody.innerHTML += "<div style='left:"+i*50+"px; top:"+ i*50 +"px;'>"+(i+1)+"</div>";
+					}else{
+						mesbody.innerHTML += "<div style='left:"+(4-i)*50+"px; top:"+ i*50 +"px;'>"+(i+1)+"</div>";
+					}
+				}
+			}
+			//向右
+			function fnright(){
+				mesbody.innerHTML = '';
+				for(var i=0; i<5; i++){
+					if(i<3){
+						mesbody.innerHTML += "<div style='left:"+(4-i)*50+"px; top:"+ i*50 +"px;'>"+(i+1)+"</div>";
+					}else{
+						mesbody.innerHTML += "<div style='left:"+i*50+"px; top:"+ i*50 +"px;'>"+(i+1)+"</div>";
+					}
+				}
+			}
+			//点击
+			btn.onclick = function(){
+//				alert(num);
+				switch(num){
+					case 0: fnup();	break;
+					case 1: fnright();break;
+					case 2: fndown(); break;
+					case 3: fnleft();break;
+				}
+				num++;
+				num %= 4;
+			}
+		</script>
+	</body>
+</html>

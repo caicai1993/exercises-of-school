@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			li{
+				height: 70px;
+				list-style: none;
+			}
+			#Ul{
+				height: 70px;
+				overflow: hidden;
+			}
+			.up, .down{
+				position: relative;
+			}
+			.up img, .down img{
+				position: absolute;
+				top: 0;
+			}
+			.down{
+				/*visibility: hidden;*/
+			}
+		</style>
+	</head>
+	<body>
+		<ul id="Ul">
+			<li class="up"></li>
+			<li class="down"></li>
+		</ul>
+		<script>
+			var oUl = document.getElementById('Ul');
+			var arrLi = oUl.getElementsByTagName('li');
+			var arrImg = ["img/0.jpg", "img/1.jpg", "img/2.jpg", "img/3.jpg", "img/4.jpg", "img/5.jpg", "img/6.jpg", "img/7.jpg","img/8.jpg", "img/9.jpg"];
+//			var arrDiffer = [];
+			
+			function fnadd0(n){
+				return n<10 ? "0"+n : ""+n;
+			}
+			
+			function fnCompare(s1,s2){
+				var arrDiffer = [];
+				for(var i=0; i<s1.length; i++){
+					if(s1.charAt(i) != s2.charAt(i)){
+						arrDiffer.push([i, s2.charAt(i)]);//变换的哪一位，这上面的字符串是多少
+					}
+				}
+				return arrDiffer;
+			}
+			
+			function fntoImg(s){
+				var tmpStr ="";
+				for(var i=0; i<s.length; i++){
+					var tmp = s.charAt(i);
+					if(i==2 || i==5){
+						tmpStr += "<img src='img/b.jpg' style='left: "+50*i+"px;'/>";
+					}else{
+						tmpStr += "<img src='"+arrImg[tmp]+"' style='left:"+50*i+"px;'/>";
+					}
+				}
+				return tmpStr;
+			}
+			
+			function move(obj,attrobj,duration,funcname){//参数分别是：对象、需要改变的属性组成的对象、时间、变换的速度函数、回调函数名
+				var starttime = new Date();//开始时间
+				var d = duration;//从起点到终点，需要运动的时间
+				var j = {};
+				for(var attr in attrobj){
+					j[attr] = {};
+					j[attr].b = parseFloat(getComputedStyle(obj)[attr]);//开始的位置,去掉单位
+					j[attr].c = attrobj[attr] - j[attr].b;//运动的路程：结束位置-开始位置
+				}//建立了一个对象，包含了开始距离和中间运动路程
+//				console.log(j);
+				obj.timer = setInterval(function(){
+					var t = new Date() - starttime ; //已经走过的时间
+					if(t >= d){
+						t = d;
+						clearInterval(obj.timer);
+						funcname&&funcname();
+					}
+					
+					for(var attr in j){
+						var b = j[attr].b;
+						var c = j[attr].c;
+						var v = c*t/d + b;
+						
+						if(attr == "opacity"){
+							obj.style[attr]  = v ;
+						}else{
+							obj.style[attr]  = v + "px";
+						}
+						
+					}
+//					console.log(obj.style.width);
+				},16);
+			}
+		
+			var oldTime = new Date();
+			var oldH = fnadd0(oldTime.getHours()); 
+			var oldM = fnadd0(oldTime.getMinutes()); 
+			var oldS = fnadd0(oldTime.getSeconds()); 
+			var str0 = oldH + ":" + oldM + ":" +　oldS;
+			arrLi[0].innerHTML = fntoImg(str0);
+			
+			setInterval(function(){
+				var newTime = new Date();
+				var newH = fnadd0(newTime.getHours()); 
+				var newM = fnadd0(newTime.getMinutes()); 
+				var newS = fnadd0(newTime.getSeconds());
+				
+				var str1 = newH + ":" + newM + ":" +　newS;
+				console.log(str0,str1);
+				arrLi[1].innerHTML = fntoImg(str1);
+				var arr = fnCompare(str0,str1);//将两个字符串中不同的位，储存在数组中
+				
+				console.log(arr);
+				for(var i=0; i<arr.length; i++){
+					
+					function fn(m){
+						var s = arrLi[0].getElementsByTagName('img')[arr[m][0]];//被替换
+						var t = arrLi[1].getElementsByTagName('img')[arr[m][0]];//替换
+						
+						move(t,{"top": -69},1000,function(){
+							s.src = arrImg[arr[m][1]];
+							t.style.top = "0";//图片的切换会出现抖动，原因是图片的切换速度比top值得改变速度慢
+						})
+					}
+					fn(i);
+				}
+				str0 = str1;
+			},1000);
+		</script>
+	</body>
+</html>

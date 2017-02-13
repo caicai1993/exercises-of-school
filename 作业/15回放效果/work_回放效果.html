@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#box{
+				width: 100px;
+				height: 100px;
+				background: lightsalmon;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box"></div>
+		<script>
+			var box = document.getElementById("box");
+			drag_or_back(box);
+			function drag_or_back(objj){
+				var disx;
+				var disy;
+				var arr  = [];
+				objj.onmousedown = function(e){
+					disx = e.clientX - objj.offsetLeft;
+					disy= e.clientY - objj.offsetTop;
+//					var num = 0;//测试误差
+					document.onmousemove = function(e){
+//						num++;
+//						console.log(num);
+						objj.style.left = e.clientX - disx + "px";
+						objj.style.top = e.clientY - disy + "px";
+						setTimeout(function(){
+//							console.log(num);
+							arr.push([objj.style.left,objj.style.top]);
+						},10);
+					}
+					document.onmouseup = function(){
+						document.onmousemove = null;
+						var timer = setInterval(function(){
+							if(arr.length != 0){
+								var tmp = arr.pop();
+								objj.style.left = tmp[0];
+								objj.style.top = tmp[1];
+							}else{
+								clearInterval(timer);
+							}
+						},10);
+					}
+				}
+			}
+		</script>
+	</body>
+</html>

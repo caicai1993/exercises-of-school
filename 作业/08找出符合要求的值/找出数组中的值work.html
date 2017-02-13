@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+     <!--
+     1、找到arr里所有的数字：-98765, 34, -2, 0, 5
+     2、找到可以转成数字的：'100px', -98765, 34, -2, 0, '300', '23.45元',  5
+     3、把转成数字以后，最大值判断出来：300
+     4、把 NaN 所在的位置找出来：1 14 17 19
+     -->
+	<script>
+	  	var arr = [ '100px', 'abc'-6, [], -98765, 34, -2, 0, '300', , function(){alert(1);}, null, document, [], true, '200px'-30,'23.45元', 5, Number('abc'), function(){ alert(3); }, 'xyz'-90,false ];
+		var res1 = [];
+		var res2 = [];
+		var res3 = -Infinity;
+		var res4 = [];
+		for(var i=0; i<arr.length; i++){
+			//是数字的,讲后思：此处不能用IsNaN()来判断，因为空数组不能被排除
+			if(typeof(arr[i])=="number" && arr[i]==arr[i] ){
+				res1.push(arr[i]);
+			}
+			//可以转换成数字的，
+//			if(!isNaN(parseInt(arr[i])) ){
+//				res2.push(arr[i]);
+//			}
+//			讲后思：Number会将空数组转换成0，所以不能用Number转化
+			if(parseFloat(arr[i]) == parseFloat(arr[i])){
+				res2.push(arr[i]);
+				if(parseFloat(arr[i])>res3){
+					res3 = parseFloat(arr[i]);
+				}
+			}
+			//NaN的下标
+			if(/*typeof(arr[i])=="number" &&*/ arr[i]!==arr[i]){
+				res4.push(i);
+			}
+		}
+		//最大值
+//		for(var i=0; i<res2.length; i++){
+//			var tmp = parseFloat(res2[i]);
+//			if(tmp > res3){
+//				res3 = tmp;
+//			}
+//		}
+		console.log(res1);
+		console.log(res2);
+		console.log(res3);
+		console.log(res4);
+		
+	</script>
+	</body>
+</html>

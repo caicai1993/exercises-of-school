@@ -1,0 +1,103 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>无标题文档</title>
+</head>
+<body>
+<ul id="list">
+	<li>
+	  	<input type="button" value="-" />
+	    <strong>0</strong>
+	  	<input type="button" value="+" />
+	    单价：<em>12.5元</em>
+	    小计：<span>0元</span>
+    </li>
+	<li>
+  	<input type="button" value="-" />
+    <strong>0</strong>
+  	<input type="button" value="+" />
+    单价：<em>10.5元</em>
+    小计：<span>0元</span>
+  </li>
+	<li>
+  	<input type="button" value="-" />
+    <strong>0</strong>
+  	<input type="button" value="+" />
+    单价：<em>8.5元</em>
+    小计：<span>0元</span>
+  </li>
+	<li>
+  	<input type="button" value="-" />
+    <strong>0</strong>
+  	<input type="button" value="+" />
+    单价：<em>8元</em>
+    小计：<span>0元</span>
+  </li>
+	<li>
+  	<input type="button" value="-" />
+    <strong>0</strong>
+  	<input type="button" value="+" />
+    单价：<em>14.5元</em>
+    小计：<span>0元</span>
+  </li>
+</ul>
+<p>
+商品合计共：<strong>0</strong>件，共花费了：<strong>0</strong>元<br />
+其中最贵的商品单价是：<strong>0</strong>元
+</p>
+<script>
+	var oUl = document.getElementById('list');
+	var arrLi = oUl.getElementsByTagName("li");
+	var oP = document.getElementsByTagName("p")[0];
+	var arrPstrong = oP.getElementsByTagName("strong");
+	function Total(){
+		var max = 0;//总数量
+		var totalmon = 0;//总钱
+		var most = -Infinity;//最贵单价
+		for(var i=0; i<arrLi.length; i++){
+			var num = parseInt(arrLi[i].getElementsByTagName('strong')[0].innerHTML);
+			var money = parseFloat(arrLi[i].getElementsByTagName('span')[0].innerHTML);
+			var price=  parseFloat(arrLi[i].getElementsByTagName('em')[0].innerHTML);
+			max += num; 
+			totalmon += money;
+			if(num>0 && price>most){
+				most = price;
+			}
+		}
+		arrPstrong[0].innerHTML = max;
+		arrPstrong[1].innerHTML = totalmon;
+		arrPstrong[2].innerHTML = most;
+	}
+	function change(n){
+		var arrInp = arrLi[n].getElementsByTagName('input');
+		var oNum = arrLi[n].getElementsByTagName('strong')[0];
+		var oPri = arrLi[n].getElementsByTagName('em')[0];
+		var oTot = arrLi[n].getElementsByTagName('span')[0];
+		var num = 0;
+		
+		//点击减号
+		arrInp[0].onclick = function(){
+			num--;
+			if(num < 0){
+				num = 0;
+			}
+			oNum.innerHTML = num;
+			oTot.innerHTML = num*parseFloat(oPri.innerHTML)+'元';
+			Total();
+		}
+		//点击加号
+		arrInp[1].onclick = function(){
+			num++;
+			oNum.innerHTML = num;
+			oTot.innerHTML = num*parseFloat(oPri.innerHTML)+'元';
+			Total();
+		}
+	}
+	for(var i=0; i<arrLi.length; i++){
+		change(i);
+	}
+</script>
+</body>
+</html>

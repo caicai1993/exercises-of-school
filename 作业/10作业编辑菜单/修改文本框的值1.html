@@ -1,0 +1,134 @@
+<!DOCTYPE html >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style type="text/css">
+	body{
+		line-height: 20px;
+	}
+	.title{
+		line-height: 25px;
+		text-indent:2em;
+		font-weight: bold;
+		color: white; 
+		font-size: 16px;
+		background-color: #6BA542;
+		width: 300px;
+	}
+	p{
+		margin: 0;
+	}
+	#list{
+		margin: 0;
+		padding: 0;
+		width: 300px;
+	}
+	li{
+		list-style: none;
+		border-top: 2px solid #26D9C7;
+	}
+	img{
+		width: 15px;
+		height: 15px;
+		cursor: pointer;
+	}
+	a{
+		text-decoration: none;
+		color: #429400;
+	}
+	#list p{
+		display: inline;
+	}
+	#list div{
+		
+		display: none;
+	}
+	#list .show{
+		display: block;
+	}
+</style>
+</head>
+<body>
+	<p class="title">分类名称</p>
+	<ul id="list">
+		<li>
+			<div class="show">
+				<p>妙味远程课堂</p>
+				<img src="images/pen.png" alt="点击编辑" title="点击编辑">
+			</div>
+			<div>
+				<input type="text" name="">
+				<a href="javascript:;">确定</a>
+				<a href="javascript:;">取消</a>
+			</div>
+		</li>
+		<li>
+			<div class="show">
+				<p>妙味远程课堂</p>
+				<img src="images/pen.png" alt="点击编辑" title="点击编辑">
+			</div>
+			<div>
+				<input type="text" name="">
+				<a href="javascript:;">确定</a>
+				<a href="javascript:;">取消</a>
+			</div>
+		</li>
+		<li>
+			<div class="show">
+				<p>妙味远程课堂</p>
+				<img src="images/pen.png" alt="点击编辑" title="点击编辑">
+			</div>
+			<div>
+				<input type="text" name="">
+				<a href="javascript:;">确定</a>
+				<a href="javascript:;">取消</a>
+			</div>
+		</li>
+		<li>
+			<div class="show">
+				<p>妙味远程课堂</p>
+				<img src="images/pen.png" alt="点击编辑" title="点击编辑">
+			</div>
+			<div>
+				<input type="text" name="">
+				<a href="javascript:;">确定</a>
+				<a href="javascript:;">取消</a>
+			</div>
+		</li>
+	</ul>
+	<script type="text/javascript">
+		var oList = document.getElementById('list');
+		var arrLi = oList.getElementsByTagName('li');
+		function addClick(n){
+			var arrDiv = arrLi[n].getElementsByTagName("div");
+			var oPen = arrDiv[0].getElementsByTagName("img")[0];
+			var oP = arrDiv[0].getElementsByTagName("p")[0];//显示信息
+			var oSure = arrDiv[1].getElementsByTagName("a")[0];
+			var oConcel = arrDiv[1].getElementsByTagName("a")[1];
+			var oInp = arrDiv[1].getElementsByTagName("input")[0];//输入信息
+			//点击笔的时候
+			oPen.onclick = function(){
+				arrDiv[0].className = "";
+				arrDiv[1].className = "show";
+				oInp.value = oP.innerHTML ;
+			}
+			//点击确定键
+			oSure.onclick = function(){
+				oP.innerHTML = oInp.value;
+				arrDiv[0].className = "show";
+				arrDiv[1].className = "";
+			}
+			//点击删除键
+			oConcel.onclick = function(){
+				arrDiv[0].className = "show";
+				arrDiv[1].className = "";
+				oInp.value = "";
+			}
+		}
+		for(var i=0; i<arrLi.length; i++){
+			addClick(i);
+		}
+	</script>
+</body>
+</html>

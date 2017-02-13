@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			<!--
+				获取
+			-->
+		</title>
+		<style>
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			li{
+				list-style: none;
+			}
+			section{
+				margin: 50px auto;
+				padding: 20px 30px;
+				width: 780px;
+				height: 300px;
+				border: 10px solid #808080;
+			}
+			#inputbox{
+				width: 300px;
+				height: 300px;
+				border: 1px dashed #000;
+				background: papayawhip;
+				float: left;
+			}
+			.center{
+				float: left;
+				width: 140px;
+				height: 300px;
+				margin-left: 18px;
+				text-align: center;
+			}
+			p{
+				width: 300px;
+				height: 300px;
+				border: 1px dashed #000;
+				background: honeydew;
+				float: right;
+			}
+			.center #btn{
+				width: 100px;
+				height: 40px;
+				font: bold 16px/40px "微软雅黑";
+				margin-left: 20px;
+				background: greenyellow;
+			}
+			.center span{
+				display: block;
+				height: 30px;
+				padding: 10px;
+				font: 14px/30px "微软雅黑";
+			}
+			.speed{
+				height:30px;
+				text-align: center;
+				padding: 15px;
+				
+			}
+			.speed>li{
+				width: 10px;
+				height: 10px;
+				float: left;
+				margin-left: 3px;
+				background: pink;
+			}
+			.speed .show{
+				background: deeppink;
+			}
+		</style>
+	</head>
+	<body>
+		<section>
+			<textarea id="inputbox"></textarea>
+			<div class="center">
+				<div id="btn">把文字右移</div>
+				<span>**/**</span>
+				<ul class="speed">
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+			</div>
+			<p id="rightdiv"></p>
+		</section>
+		<script>
+			var oIbox = document.getElementById('inputbox');
+			var oBtn = document.getElementById('btn');
+			var oRdiv = document.getElementById('rightdiv');
+			var oCen = document.getElementsByClassName('center')[0];
+			var oSpan = oCen.getElementsByTagName('span')[0];
+			var oUl = oCen.getElementsByTagName('ul')[0];
+			var arrLi = oUl.getElementsByTagName('li');
+			var last = 0;
+			
+			oUl.style.opacity = 0;
+			oBtn.onclick = function(){
+				var str = oIbox.value;//获取输入的值
+				var length = str.length;
+				var i = 0;
+				if(str != ""){
+					oRdiv.innerHTML = "";
+				}
+				
+				var timer = setInterval(function(){
+					var len = length-i;
+					i++;
+					//显示
+					oBtn.style.opacity = 0.5;
+					oSpan.innerHTML = (i-1) + "/" + length;
+					oUl.style.opacity = 1;
+					arrLi[last].className = "";
+					arrLi[i%8].className = "show";
+					last = i%8;
+					//右边
+					var strr = str.charAt(0);
+					oRdiv.innerHTML = oRdiv.innerHTML + strr;
+					//左边
+					var strl = str.slice(1, len+1);
+					str = strl;
+					oIbox.value = str;
+					
+					if(i　> length){
+						oBtn.style.opacity = 1;
+						oUl.style.opacity = 0;
+						clearInterval(timer);
+					}
+					
+					
+				},100);
+			}
+		</script>
+	</body>
+</html>

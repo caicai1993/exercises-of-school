@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>招贤纳士-社会招聘</title>
+		<link href="style.css" rel="stylesheet" type="text/css" />
+		<!--<base target="_blank" />-->
+		<script src="js/data.js"></script>
+	</head>
+	<body>
+		<div id="wrap">
+			<div class="left">
+				<h2>招贤纳士</h2>
+				<ul>
+					<!--<li class="focus"><a href="javascript:;">社会招聘</a></li>
+      	<li><a href="javascript:;">校园招聘</a></li> -->
+				</ul>
+			</div>
+			<div class="right">
+				<div class="title">
+					<!--<img src="img/shzp.gif" />-->
+				</div>
+				<div class="info" id="info1">
+
+				<!-- <p class="zp">
+			        	<span><a href="">★ 职位需求：测试工程师【社会招聘】</a></span>
+			          	<span>需求人数：2名</span>
+			         	<span class="date">2013年7月30日</span>
+			        </p>
+      	<p class="yq">1.计算机或相关专业本科以上学历；2.从事软件测试工作3年及以上；3.具备良好的沟通能力和快速学习能力；4.精通测试策略和方法、测试用例设计；5.熟悉DB2、AIX等平台的基本操作；6.具备2年以上金...[<a href="">查看详情</a>]
+        </p>
+
+      	<p class="zp">
+        	<span><a href="">★ 职位需求：测试工程师【社会招聘】</a></span>
+          <span>需求人数：12名</span>
+         	<span class="date">2013年7月30日</span>
+        </p>
+      	<p class="yq">1.计算机或相关专业本科以上学历；2.从事软件测试工作3年及以上；3.具备良好的沟通能力和快速学习能力；4.精通测试策略和方法、测试用例设计；5.熟悉DB2、AIX等平台的基本操作；6.具备2年以上金...[<a href="">查看详情</a>]
+        </p>
+
+      	<p class="zp">
+        	<span><a href="">★ 职位需求：测试工程师【社会招聘】</a></span>
+          <span>需求人数：21名</span>
+         	<span class="date">2013年7月30日</span>
+        </p>
+      	<p class="yq">1.计算机或相关专业本科以上学历；2.从事软件测试工作3年及以上；3.具备良好的沟通能力和快速学习能力；4.精通测试策略和方法、测试用例设计；5.熟悉DB2、AIX等平台的基本操作；6.具备2年以上金...[<a href="">查看详情</a>]
+        </p> -->
+
+				</div>
+				<div class="pages">
+					<span class="prev" id="prev1">
+			          <a href="javascript:;">
+			            <img src="img/pre.gif">
+			          </a>
+        			</span>
+					<span class="next" id="next1">
+			          <a href="javascript:;">
+			            <img src="img/next.gif">
+			          </a>
+       				 </span>
+					<p id="page1">
+						<!--<span class="focus">
+				            <a href="javascript:;">1</a>
+				          </span>
+				          <span>
+				            <a href="javascript:;">2</a>
+				          </span>
+				          <span>
+				            <a href="javascript:;">3</a>
+				          </span>-->
+					</p>
+				</div>
+
+			</div>
+			<div class="clear"></div>
+		</div>
+		<script>
+		//左侧的招聘栏
+			var oWrap = document.getElementById("wrap");
+			var leftUl = oWrap.children[0].children[1];
+			var llistr = ""; //left li str
+			for(var i=0; i<aData.list.length; i++){
+				llistr += '<li><a href="javascript:;">'+aData.list[i].text+'</a></li>';
+			}
+			leftUl.innerHTML = llistr;
+			var lli = leftUl.getElementsByTagName("li");
+			
+			for(var i=0; i<lli.length; i++){
+				lli[i].index = i;
+				lli[i].onclick = function(){
+					var lastlli = window.location.search.substr(1);
+					lli[lastlli].className = "";
+					this.className = "focus";
+					window.location.search = this.index;
+				}
+			}
+		if(!window.location.search){//页面的第一次加载
+			window.location.search = 0;
+			lastli  = 0;
+		}
+		lli[window.location.search.substr(1)].className = "focus";
+		//右边
+		var curObj = aData[aData.list[window.location.search.substr(1)].lx];//当前对象
+		var title = oWrap.children[1].children[0];
+//		var num = 0;//图片的序号
+		//图片
+		title.innerHTML = '<img src="'+ curObj.img +'" />';
+		var info1 = document.getElementById("info1");
+		var lastp = 0;//记录当前的页码
+		window.location.hash = 0;
+		var page = document.getElementById("page1");
+		makeCont(curObj ,2);
+		makePage(curObj,2);
+		var spanp;//page下的a标签
+		addclick();
+		toPN();
+		window.onhashchange = function(){
+			makeCont(curObj ,2);
+			makePage(curObj,2);
+			addclick();
+			toPN();
+		}
+		function makeCont(objj ,m){//要显示的对象， 当前的页码， 每页显示的元素的排数
+			info1.innerHTML = "";
+			var str = "";
+			var n = window.location.hash.substr(1);
+			console.log(n);
+			n++;//根据规律，n是从1开始
+			console.log(n);
+			for(var i=2*(n-1); i<n*m; i++){
+				if(!objj.text[i]){ break; }
+				title.innerHTML = '<img src="'+objj.img +'" />';
+				str += '<p class="zp"><span><a href="content.html'+window.location.search+'#'+i+'" target="_blank">★ 职位需求：'+objj.text[i].zw +'</a></span><span>需求人数：'+objj.text[i].rs+'名</span><span class="date">'+aData.date(objj.text[i].sj)+'</span></p>';
+				str += '<p class="yq">';
+				for(var j=0; j<objj.text[1].info[0].l.length; j++){
+					str += objj.text[1].info[0].l[j];
+				}
+				str += '...[<a href="content.html'+window.location.search+'#'+i+'" target="_blank">查看详情</a>]</p>';
+			}
+			info1.innerHTML = str;
+		}
+		function makePage(objj,m){//生成页码，参数分别是要改对象，一页有放几个
+			page.innerHTML = "";
+			var str = '<span>';
+			for(var i=0; i<Math.ceil(objj.text.length/m); i++){
+				str += '<a href="javascript:;">'+(i+1)+'</a></span><span>';
+			}
+			str += '</span>';
+			page.innerHTML = str;
+		}
+		function addclick(){
+			spanp = page.getElementsByTagName("span");//page下的a标签
+			spanp[lastp].className = "focus";//给默认值
+			for(var i=0; i<spanp.length; i++){
+				spanp[i].index = i;			
+				spanp[i].onclick = function(){
+					spanp[lastp].className = "";
+					this.className = "focus";
+					lastp = this.index;
+					window.location.hash = lastp;
+				}
+			}
+		}
+		function toPN(){
+			var prev1 = document.getElementById("prev1");
+			var next1 = document.getElementById("next1");
+			prev1.onclick = function(){
+				spanp[lastp].className = "";
+				lastp--;
+				if(lastp<0){
+					lastp = 0;
+				}
+				spanp[window.location.hash.substr(1)].className = "focus";
+				window.location.hash = lastp;
+			}
+			next1.onclick = function(){
+				spanp[lastp].className = "";
+				lastp++;
+				if(lastp>curObj.length){
+					lastp = curObj.length-1;
+				}
+				spanp[window.location.hash.substr(1)].className = "focus";
+				window.location.hash = lastp;
+			}
+		}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				background: hotpink;
+			}
+			#box{
+				width: 500px;
+				height: 500px;
+				margin: 50px auto;
+				position: relative;
+				background: url(img/downbg.jpg) no-repeat;
+				background-size: 500px 500px;
+			}
+			#box div{
+				width: 50px;
+				height: 50px;
+				background: greenyellow;
+				position: absolute;
+				background: url(img/imissyou.jpg) no-repeat;
+				-webkit-mask-attachment: ;
+				background-size: 500px 500px;
+				transition: 0.5s;
+				transform-origin: 25px 25px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+		</div>
+		<script>
+			var oBox = document.getElementById("box");//外框
+			var arrDiv = oBox.getElementsByTagName('div');//用于覆盖的小方块
+			var topNum = 0;//距离上边的方格个数
+			var leftNum = 0;//距离左边的方格个数
+			
+			for(var i=0; i<100; i++){
+				leftNum = i%10;
+				topNum = Math.floor(i/10);
+				oBox.innerHTML += "<div style='left:"+leftNum*50+"px; top: "+topNum*50+"px; background-position:"+ leftNum*(-50) +"px "+ topNum*(-50) +"px;'></div>";
+			}
+			for(var i=0; i<100; i++){
+				arrDiv[i].onmouseover = function(){
+					this.style.transform = "rotate(360deg) scale(0)";
+				}
+			}
+			//两个for循环不能写到同一个里面，以为innerHTML的执行原理的，
+			//将上一次的内容全部拷贝到临时的存储空间，然后再赋值给新的innerHTML中，
+			//现在的内容已经不包含onmoueseover函数
+		</script>
+	</body>
+</html>

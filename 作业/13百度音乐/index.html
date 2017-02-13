@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body,
+			ul,
+			li {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="baidu.css" />
+	</head>
+
+	<body>
+		<div class="wrap">
+			<div class="baidu">
+				<ul id="list">
+					<li>
+						<div></div>
+						<span>泡沫</span>
+						<span>邓紫棋</span>
+					</li>
+					<li>
+						<div></div>
+						<span>说爱你</span>
+						<span>蔡依林</span>
+					</li>
+					<li>
+						<div></div>
+						<span>稻香</span>
+						<span>周杰伦</span>
+					</li>
+					<li>
+						<div></div>
+						<span>我的梦</span>
+						<span>张靓颖</span>
+					</li>
+					<li>
+						<div></div>
+						<span>怎么说我不爱你</span>
+						<span>萧敬腾</span>
+					</li>
+					<li>
+						<div></div>
+						<span>无处安放</span>
+						<span>白若溪</span>
+					</li>
+				</ul>
+				<div class="select">
+					<span class="selectAll"><span>全选</span></span>
+					<div class="others">
+						<span><em></em>收藏</span>
+						<span><em></em>添加</span>
+						<span><em></em>删除</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			var oList = document.getElementById("list");//列表
+			var arrLi = oList.getElementsByTagName("li");//li
+			var arrDiv = oList.getElementsByTagName("div");//div
+			var ochoseAll = document.getElementsByClassName('selectAll')[0];//全选
+			var flag = true;//flag为true时，全选可选
+			var tmp = ochoseAll.innerHTML;//备份
+			
+			function fncheckres(){
+				var clickNum = 0;
+				for(var i=0; i<arrDiv.length; i++){
+					if(!arrDiv[i].onoff){
+						clickNum++;
+					}
+				}
+				if(clickNum == arrDiv.length){
+					ochoseAll.innerHTML = "✔" + tmp;
+				}else{
+					ochoseAll.innerHTML = tmp;
+				}
+				flag = !flag;
+			}
+			function fnCheck(n){
+				var oCheckbox = arrLi[n].getElementsByTagName("div")[0];
+				//添加索引
+				oCheckbox.index = n;
+				//给每个添加开关
+				oCheckbox.onoff = true;
+				//给单个的checkbox添加点击
+				oCheckbox.onclick = function(){
+					if(oCheckbox.onoff){
+						oCheckbox.innerHTML = "✔";
+						arrLi[n].style.background = "#e15671";
+					}else{
+						oCheckbox.innerHTML = "";
+						if(n%2){
+							arrLi[n].style.background = "pink";
+						}else{
+							arrLi[n].style.background = "";
+						}
+					}
+					oCheckbox.onoff = !oCheckbox.onoff;
+					fncheckres();
+				}
+			}
+			for(var i=0; i<arrLi.length; i++){
+				if(i%2){
+					arrLi[i].style.background = "pink";//添加条纹
+					classname = "pink";
+				}
+				fnCheck(i);//为单个选框添加的效果
+			}
+			ochoseAll.onclick = function(){
+				if(flag){
+					ochoseAll.innerHTML = "✔" + tmp;
+					for(var i=0; i<arrDiv.length; i++){
+					if(arrDiv[i].onoff){
+						arrDiv[i].innerHTML = "✔";
+						arrLi[i].style.background = "#e15671";
+						arrDiv[i].onoff = !arrDiv[i].onoff;
+						}
+					}
+				}else{
+					ochoseAll.innerHTML = tmp;
+					for(var i=0; i<arrDiv.length; i++){
+					if(!arrDiv[i].onoff){
+						arrDiv[i].innerHTML = "";
+						if(i%2){
+							arrLi[i].style.background = "pink";
+						}else{
+							arrLi[i].style.background = "";
+						}
+						arrDiv[i].onoff = !arrDiv[i].onoff;
+						}
+					}
+				}
+				flag = !flag
+			}
+		</script>
+	</body>
+
+</html>

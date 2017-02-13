@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>百度评分</title>
+		<style>
+			body,h1 {
+				margin: 0;
+				padding: 0;
+				-webkit-font-smoothing: antialiased;
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="pingfen.css"/>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="baidu">
+				<div class="caption">
+					<h1></h1>
+					<span>总体评价</span>
+				</div>
+				<div class="context">
+					<div class="starts">
+						<span>☆</span>
+						<span>☆</span>
+						<span>☆</span>
+						<span>☆</span>
+						<span>☆</span>
+					</div>
+					<div class="info">满意</div>
+				</div>
+				<div class="tips">
+					小提示：点击星星就能打分
+				</div>
+			</div>
+		</div>
+		<script>
+			var oStarts = document.getElementsByClassName("starts")[0];
+			var oInfo = document.getElementsByClassName("info")[0];
+			var arrSpan = oStarts.getElementsByTagName("span");//获取5颗小星星
+			var last = -1;//记录一下点击的星星的索引值，不能赋值为0
+			function fnclear(){
+				for(var j=0; j<arrSpan.length; j++){
+					arrSpan[j].innerHTML = "☆";
+					arrSpan[j].style.color = "";
+				}
+			}
+			function fnClick(index){
+				fnclear();
+				oInfo.style.display = "block";
+				var commit = "";
+				switch(index){
+					case 0: commit = "较差";	break;
+					case 1: commit = "一般";	break;
+					case 2: commit = "不错";	break;
+					case 3: commit = "推荐";	break;
+					case 4: commit = "力推";	break;
+				}
+				oInfo.innerHTML = commit;
+				for(var i=0; i<=index; i++){
+					arrSpan[i].innerHTML = "★";
+					if(index>=0 && index<2){
+						arrSpan[i].style.color = "pink";
+					}else if(index>=2){
+						arrSpan[i].style.color = "red";
+					}
+				}
+			}
+			for(var i=0; i<arrSpan.length; i++){
+				arrSpan[i].index = i;//加索引
+				arrSpan[i].onclick = function(){//点击
+					
+					last = this.index;
+					fnClick(last);
+				}
+				arrSpan[i].onmouseover = function(){//鼠标移入
+					//给划入的星星添加样式
+					fnClick(this.index);
+				}
+				arrSpan[i].onmouseout = function(){//鼠标移出
+					oInfo.style.display = "";
+					fnclear();
+					if(last != -1){//这里是个坑
+						fnClick(last);
+					}
+				}
+			}
+		</script>
+	</body>
+</html>
